@@ -100,7 +100,7 @@ while True:
 					feels.append(fee_type)
 					centernamels.append(center_name)
 
-				if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1):
+				if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1) and (len(availablels) > 0):
 					message =f'''Dear {name},
 There are {availablels} TOTAL slots you can book right now for {datels}, age limit = {agels}!
 Book soon!

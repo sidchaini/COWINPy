@@ -35,7 +35,7 @@ nohup python3 pin_cowin.py
 ```
 
 ## Contributions
-Contributions are welcome and appreciated. Please do share your results and mention this work as well. 
+Contributions are welcome and appreciated. Please do share your results and acknowledge this work as well. 
 
 Example: This could be converted into a webapp.
 (If you do take this up, please do contact me)

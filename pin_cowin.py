@@ -100,8 +100,8 @@ while True:
 					feels.append(fee_type)
 					centernamels.append(center_name)
 
-					if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1):
-						message =f'''Dear {name},
+				if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1):
+					message =f'''Dear {name},
 There are {availablels} TOTAL slots you can book right now for {datels}, age limit = {agels}!
 Book soon!
 
@@ -117,10 +117,10 @@ Please check https://www.cowin.gov.in/home for more details!
 Regards,
 Team COWINPy
 '''
-						send_slot_email(receiver_email,message)
-						print(message)
-						print("Email Sent Successfully. Sleeping for 1 hour")
-						time.sleep(3600)
+					send_slot_email(receiver_email,message)
+					print(message)
+					print("Email Sent Successfully. Sleeping for 1 hour")
+					time.sleep(3600)
 		time.sleep(10)
 	except Exception as e:
 		print(e)

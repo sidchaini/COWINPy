@@ -66,41 +66,42 @@ send_slot_email(receiver_email,start_message)
 print("Sent intro email")
 
 while True:
-	today = datetime.now(tz=gettz('Asia/Kolkata')).date().strftime("%d-%m-%Y")
-	url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pin}&date={today}"
-	cowin_dict = json.loads(requests.get(url).text)
+	try:
+		today = datetime.now(tz=gettz('Asia/Kolkata')).date().strftime("%d-%m-%Y")
+		url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pin}&date={today}"
+		cowin_dict = json.loads(requests.get(url).text)
 
-	all_centres_list_of_dicts = cowin_dict["centers"]
-	datels = []
-	availablels = []
-	agels = []
-	typevacls = []
-	feels = []
-	centernamels = []
+		all_centres_list_of_dicts = cowin_dict["centers"]
+		datels = []
+		availablels = []
+		agels = []
+		typevacls = []
+		feels = []
+		centernamels = []
 
-	for iter1, center_dict in enumerate(all_centres_list_of_dicts):
-		pincode = center_dict["pincode"]
-		center_district = center_dict["district_name"]
-		center_name = center_dict["name"]
-		center_state = center_dict["state_name"]
-		fee_type = center_dict["fee_type"]
-		private_center_dict = {}
-		for iter2, session_dict in enumerate(center_dict["sessions"]):
-			avail_date = session_dict["date"]
-			avail_slots = session_dict["available_capacity"]
-			slot_age_lim = session_dict["min_age_limit"]
-			vaccine_type = session_dict["vaccine"]
+		for iter1, center_dict in enumerate(all_centres_list_of_dicts):
+			pincode = center_dict["pincode"]
+			center_district = center_dict["district_name"]
+			center_name = center_dict["name"]
+			center_state = center_dict["state_name"]
+			fee_type = center_dict["fee_type"]
+			private_center_dict = {}
+			for iter2, session_dict in enumerate(center_dict["sessions"]):
+				avail_date = session_dict["date"]
+				avail_slots = session_dict["available_capacity"]
+				slot_age_lim = session_dict["min_age_limit"]
+				vaccine_type = session_dict["vaccine"]
 
-			if avail_slots > 0 and age>=slot_age_lim:
-				availablels.append(avail_slots)
-				datels.append(avail_date)
-				agels.append(slot_age_lim)
-				typevacls.append(vaccine_type)
-				feels.append(fee_type)
-				centernamels.append(center_name)
+				if avail_slots > 0 and age>=slot_age_lim:
+					availablels.append(avail_slots)
+					datels.append(avail_date)
+					agels.append(slot_age_lim)
+					typevacls.append(vaccine_type)
+					feels.append(fee_type)
+					centernamels.append(center_name)
 
-				if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1):
-					message =f'''Dear {name},
+					if (iter1 == len(all_centres_list_of_dicts) - 1) and (iter2 == len(center_dict["sessions"]) - 1):
+						message =f'''Dear {name},
 There are {availablels} TOTAL slots you can book right now for {datels}, age limit = {agels}!
 Book soon!
 
@@ -116,10 +117,14 @@ Please check https://www.cowin.gov.in/home for more details!
 Regards,
 Team COWINPy
 '''
-					send_slot_email(receiver_email,message)
-					print(message)
-					print("Email Sent Successfully. Sleeping for 1 hour")
-					time.sleep(3600)
-	print(time.sleep(10))
+						send_slot_email(receiver_email,message)
+						print(message)
+						print("Email Sent Successfully. Sleeping for 1 hour")
+						time.sleep(3600)
+		time.sleep(10)
+	except Exception as e:
+		print(e)
+		time.sleep(10)
+		continue
 
 print("Exiting.")

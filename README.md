@@ -17,21 +17,21 @@ Or,
 ``
 pip3 install python-dateutil
 ``
-Then, download the latest release for pin_cowin.py and run it as:
+Then, download the latest release for cowinpy.py and run it as:
 ```
-python pin_cowin.py
+python cowinpy.py
 ```
 or
 ```
-python3 pin_cowin.py
+python3 cowinpy.py
 ```
 Make sure to run the above once to automatically create the "preferences.txt" file. Once done, I recommend using nohup (unix/linux/mac only) so that the shell can be closed without closing the program. This can be done by executing:
 ```
-nohup python pin_cowin.py 
+nohup python cowinpy.py 
 ```
 or
 ```
-nohup python3 pin_cowin.py 
+nohup python3 cowinpy.py 
 ```
 
 ## Contributions

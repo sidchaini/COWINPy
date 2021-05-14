@@ -201,7 +201,7 @@ while True:
 			message = get_email_update_text(name, availablels, datels, agels, typevacls, centernamels, feels)
 			send_email(receiver_email,message)
 			print(message)
-			print("Email Sent Successfully. Sleeping for 1 hour")
+			print("\aEmail Sent Successfully. Sleeping for 1 hour")
 			time.sleep(sleep_success)
 		else:
 			time.sleep(sleep_refresh)

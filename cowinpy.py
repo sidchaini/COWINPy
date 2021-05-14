@@ -153,6 +153,70 @@ def get_cowin_dict_by_pin_by_api(pin,today=datetime.now(tz=gettz('Asia/Kolkata')
 	cowin_dict = json.loads(r.text)
 	return cowin_dict
 
+def prepare_driver():
+	from seleniumwire import webdriver
+	from selenium.webdriver import ActionChains
+	from selenium.webdriver.common.keys import Keys
+	from selenium.webdriver.support.select import Select
+	from webdriver_manager.chrome import ChromeDriverManager
+	# Look into headless later
+	# from selenium.webdriver.chrome.options import Options
+	# chrome_options = Options()
+	# chrome_options.add_argument("--headless")
+	global driver
+	# driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
+	driver = webdriver.Chrome(ChromeDriverManager().install())
+	driver.maximize_window()
+	driver.implicitly_wait(5)
+	# print("Chrome driver has been created.")
+
+	while True:
+		flag=1
+		try:
+			driver.get("https://selfregistration.cowin.gov.in/")
+			time.sleep(1)
+			driver.find_elements_by_class_name("mat-input-element")[0].send_keys("7021726193")
+			driver.find_element_by_class_name("login-btn").click()
+			flag=2
+			if flag==2:
+				break
+		except Exception as e:
+			continue
+	otp = int(input("Enter OTP"))
+	driver.find_elements_by_class_name("mat-input-element")[0].send_keys(otp)
+	time.sleep(2)
+	driver.find_element_by_class_name("next-btn").click()
+	time.sleep(5)
+	elems = driver.find_elements_by_class_name("btnlist")
+	#CHECK FOR MULTIPLE PEOPLE ON SAME NUMBER
+	for elem in elems:
+		if elem.text == 'Schedule':
+			elem.click()
+			break
+	time.sleep(2)
+	driver.find_elements_by_class_name("register-btn")[0].click()
+	time.sleep(2)
+	driver.find_element_by_id("mat-input-2").send_keys(pin)
+	time.sleep(2)
+	driver.find_elements_by_class_name("pin-search-btn")[0].click()
+	time.sleep(5)
+	##  Print request headers
+	for request in driver.requests:
+		if "appointment/sessions" in request.url:
+			myurl = request.url # <--------------- Request url
+			# print(request.headers) # <----------- Request headers
+	driver.get(myurl)	
+
+
+def get_cowin_dict_by_pin_by_selenium(pin,today=datetime.now(tz=gettz('Asia/Kolkata')).date().strftime("%d-%m-%Y")):
+	if 'driver' not in globals():
+		prepare_driver()
+	else:
+		driver.refresh()
+	jsontxt = driver.find_element_by_tag_name("pre").text
+	cowin_dict  = json.loads(jsontxt)
+	return cowin_dict
+
 def get_availaible_slots(cowin_dict):
 	all_centres_list_of_dicts = cowin_dict["centers"]
 	datels = []
@@ -203,6 +267,8 @@ name, age, receiver_email, pin, required_vaccine_type, bot_version, sleep_refres
 # if bot_version == 1.0 and search=="PIN":
 if bot_version == 1.0:
 	get_cowin_dict = get_cowin_dict_by_pin_by_api
+elif bot_version == 2.0:
+	get_cowin_dict = get_cowin_dict_by_pin_by_selenium
 
 while True:
 	try:

@@ -5,6 +5,10 @@ Built using the Co-WIN Public APIs.
 
 Tested on Python 3.7+
 
+EDIT 11/06/21: This program no longer works, because of the new cowin restrictions placed by the Government of India. I believe this is the right thing to do, cause something like vaccinations in a pandemic shouldn't be left to only the ones who can code and run a bot. This bot was created by me, because it had turned into a hackathon, and a person I know was way pass their 2nd shot deadline by a few weeks, but still unable to book the vaccine. Hopefully things get better from now on.
+
+This project is thus officially now closed. Cheers. 
+
 ## Requirements
 Python3+ with python-dateutil>=2.8.1
 
